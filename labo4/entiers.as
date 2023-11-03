@@ -25,12 +25,31 @@
 
 .section ".text"
 
-
-
-
 Addition:
 		SAVE
+		mov 	x19, #0
+		adds 	x22, xzr, xzr
 
+Addition_byteloop:
+		cbz		x3, Addition_byteloopEnd
+
+		ldrsb 	x20, [x0], #1
+		ldrsb 	x21, [x1], #1
+
+		adcs 	x22, x20, x21
+		strb  	w22, [x2, x19]
+
+		add 	x19, x19, #1
+		sub 	x3, x3, #1
+		b.al 	Addition_byteloop
+
+Addition_byteloopEnd:
+		lsl		x20, x20, #56
+		lsl		x21, x21, #56
+		adcs	x22, x21, x22
+		//adc 	x0, xzr, xzr
+		mov		x15, #1
+		csel	x0, x15, xzr, vs
 
 
 		RESTORE
