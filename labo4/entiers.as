@@ -38,10 +38,15 @@ Addition_byteloop:
 		adcs 	x22, x20, x21
 		strb  	w22, [x2], #1
 
+		mov		x9, #1
+		mov		x10, #0
+		csel	x10, x9, x10, cs
+
 		sub 	x3, x3, #1
 		b.al 	Addition_byteloop
 
 Addition_byteloopEnd:
+		add		x21, x21, x10
 		lsl		x20, x20, #56
 		lsl		x21, x21, #56
 		adcs	x22, x21, x20
